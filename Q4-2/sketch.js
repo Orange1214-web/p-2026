@@ -6,18 +6,30 @@ function setup(){
   // 配列をランダムに初期化する
   let scores = [];
   for(let i = 0; i < 10; i++){
-    scores[i] = random(20, 100); // 60以上100未満のランダムな数を代入
+    scores[i] = random(20, 100); // 20以上100未満のランダムな数を代入
   }
 
   // 横線を引く
-  const n = 10;
-  for(let i = 0; i < n; i++){ line(0, height * i / n, width, height * i / n); }
+  const n = 10; //横線の本数
+  for(let i = 0; i < n; i++){ line(0, height * i / n, width, height * i / n); } //等間隔に横線を10本引く
 
   // ここからが本番
   fill(0);
-  const dx = width / scores.length;
+  const dx = width / scores.length; //データの個数に合わせて、横方向の幅（間隔）を均等に計算し定数 dx に代入
   let px, py; // 線を引くために一つ前の点を覚えておく変数
-  for(let i = 0; i < scores.length; i++){
+  for(let i = 0; i < scores.length; i++){ //データ配列の要素数だけ繰り返すループ処理
     // BLANK[1]
-  }
+    const x = i * dx + dx / 2; //データの横方向（X座標）の位置　i * dxは０から９をとる　それぞれに幅の1/2の長さを足すことでそれぞれの中心に位置させることができる
+    const y = height - height * scores[i] / 100; 
+    //データ値に応じた縦方向（Y座標）の位置　scores[i] / 100はスコアの最大値を100として、現在のスコアが全体の何割（割合）かを表す小数（0.2〜1.0など）を求める　
+    //height * (スコアの割合) キャンバス全体の高さ（height）に対して、そのスコアが占める高さをピクセル単位で計算「下からどれくらい上の位置か」
+    //height - (下のほうからの高さ) 全体の高さから「下からの高さ」を引き算することで、「一番下（height）から上にどれだけ離れているか（＝画面上部からのY座標）」に反転
+
+    ellipse( x, y, 10); //計算した位置に直径10ピクセルの円　
+    if ( i > 0 ){ 
+      line(px, py, x, y); //1つ前の点 (px, py) と現在の点 (x, y) の間に線を描画
+    }
+    px =x; //次のループのために、現在のX座標を「1つ前のX座標」として変数 px に保存
+    py =y; //同上
+    }
 }
